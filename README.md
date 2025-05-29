@@ -1,54 +1,114 @@
-# HealthPay AI-Driven Claim Document Processor
+HealthPay Medical Processor
+An AI-powered backend system designed to streamline the processing of medical insurance claim documents. Utilizing a multi-agent architecture, this system automates the extraction, validation, and summarization of information from medical bills and discharge summaries.
 
-A sophisticated backend system that processes medical insurance claim documents using AI-powered multi-agent workflows. Built with FastAPI and leveraging Google Gemini for document classification, text extraction, and intelligent claim decision-making.
+🧠 Architecture & Logic
+Overview
+The system is structured around a modular, multi-agent pipeline that processes uploaded PDF documents asynchronously. The primary components include:
 
-## 🏗️ Architecture Overview
+FastAPI Backend: Handles API requests and manages asynchronous file uploads.
 
-### Multi-Agent System Design
+Document Processing Agents: Specialized agents for OCR, data extraction, validation, and summarization.
 
-The system implements a **modular multi-agent architecture** where specialized AI agents handle different aspects of claim processing:
+AI Models: Leveraging Google Gemini for natural language understanding and information extraction.
 
-📄 Upload → 🔍 Classify → 📝 Extract → 🤖 Process → ✅ Validate → 🎯 Decide
+Validation Mechanisms: Ensures data consistency across documents.
 
-### Agent Workflow
+Dockerized Deployment: Facilitates easy setup and scalability.
 
-1. **DocumentClassifierAgent**: Classifies uploaded PDFs (bill, discharge summary, ID card, etc.)
-2. **TextExtractionAgent**: Extracts text using PyPDF2, PyMuPDF, and Gemini Vision API
-3. **Specialized Processing Agents**:
-   - **BillProcessingAgent**: Extracts billing information (amounts, dates, hospital names)
-   - **DischargeProcessingAgent**: Processes medical summaries (diagnoses, treatment details)
-4. **ValidationAgent**: Cross-validates data consistency across documents
-5. **DecisionAgent**: Makes final approval/rejection decisions with confidence scoring
+Workflow
+File Upload: Users upload multiple PDF files via a FastAPI endpoint.
 
-### Technology Stack
+Asynchronous Processing: Uploaded files are processed asynchronously to optimize performance.
 
-- **Backend Framework**: FastAPI with async support
-- **AI/LLM Integration**: Google Gemini 1.5-Flash for document processing
-- **Document Processing**: PyPDF2, PyMuPDF for PDF handling
-- **Data Validation**: Pydantic models with comprehensive validation
-- **File Handling**: Secure multipart file upload with validation
+Agent Orchestration:
 
-## 🚀 Quick Start
+OCR Agent: Extracts text from PDFs.
 
-### Prerequisites
+Extraction Agent: Identifies and extracts relevant data fields.
 
-- Python 3.11+
-- Google Gemini API key (free from https://aistudio.google.com/app/apikey)
+Validation Agent: Cross-verifies data consistency between documents.
 
-### Installation
+Summarization Agent: Generates concise summaries of the extracted information.
 
-```bash
-# Clone the repository
-git clone <repository-url>
-cd healthpay-claim-processor
+Response Generation: Processed data is compiled and returned to the user.
 
-# Create virtual environment
-python3.11 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+🤖 AI Tools & Technologies
+Google Gemini: Utilized for advanced natural language processing tasks, including information extraction and summarization.
 
-# Install dependencies
-pip install -r requirements.txt
+FastAPI: Serves as the web framework for handling API requests and managing asynchronous operations.
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your Gemini API key
+Docker: Ensures consistent and scalable deployment across different environments.
+
+🧪 Example Prompts Used
+Prompt 1
+"Create a FastAPI endpoint that accepts multiple PDF uploads and processes them through an agent orchestration pipeline. Use async processing where appropriate and implement proper error handling."
+
+Implementation Highlights:
+
+Defined an asynchronous FastAPI endpoint to handle multiple file uploads.
+
+Integrated error handling to manage exceptions during file processing.
+
+Orchestrated the processing pipeline to handle each file through the defined agents.
+
+Prompt 2
+"Build a validation agent that cross-checks data consistency between medical bills and discharge summaries. Check for patient name matches, date consistency, and hospital name alignment."
+
+Implementation Highlights:
+
+Developed a validation agent that:
+
+Extracts key fields such as patient name, admission/discharge dates, and hospital names from both documents.
+
+Compares these fields to identify discrepancies.
+
+Flags inconsistencies for further review.
+
+🛠️ Setup & Installation
+Clone the Repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/surya14b/healthpay-medical-processor.git
+cd healthpay-medical-processor
+Set Up Environment Variables:
+
+Rename .env.example to .env and populate it with the necessary configurations, including API keys for Google Gemini.
+
+Build and Run with Docker:
+
+bash
+Copy
+Edit
+docker-compose up --build
+Access the API:
+
+The FastAPI application will be available at http://localhost:8000.
+
+📂 Project Structure
+css
+Copy
+Edit
+├── agents/
+│   ├── ocr_agent.py
+│   ├── extraction_agent.py
+│   ├── validation_agent.py
+│   └── summarization_agent.py
+├── models/
+│   └── schemas.py
+├── utils/
+│   └── helpers.py
+├── main.py
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── .env.example
+✅ Features
+Asynchronous File Processing: Efficient handling of multiple file uploads.
+
+Modular Agent Design: Each agent performs a specific task, enhancing maintainability.
+
+Robust Validation: Ensures data integrity across different document types.
+
+Scalable Deployment: Dockerized setup allows for easy scaling and deployment.
