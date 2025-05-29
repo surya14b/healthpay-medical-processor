@@ -101,6 +101,28 @@ AI is used for:
 
 ---
 
+🚨**Known Limitations & Trade-offs**
+Current Limitations
+
+- API Dependencies: Requires stable internet connection for Gemini API calls
+- Processing Time: Complex documents may take 3-5 seconds to process
+- File Size Limits: 50MB per file limit for processing efficiency
+- Language Support: Currently optimized for English medical documents
+
+**Design Trade-offs**
+
+- Accuracy vs Speed: Chose multiple extraction methods over single fast method
+- Cost vs Quality: Used Gemini (free) instead of premium models for cost efficiency
+- Complexity vs Maintainability: Modular agents increase complexity but improve maintainability
+
+**Future Improvements**
+
+- Redis caching for processed documents
+- PostgreSQL integration for audit trails and persistence
+- Vector database for semantic document search
+- Real-time processing status updates via WebSockets
+- Additional document types (lab reports, prescriptions)
+
 ## 🧪 How to Run Locally
 
 1. **Clone the Repository**
