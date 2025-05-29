@@ -1,114 +1,144 @@
-HealthPay Medical Processor
-An AI-powered backend system designed to streamline the processing of medical insurance claim documents. Utilizing a multi-agent architecture, this system automates the extraction, validation, and summarization of information from medical bills and discharge summaries.
+# 🏥 HealthPay Medical Processor
 
-🧠 Architecture & Logic
-Overview
-The system is structured around a modular, multi-agent pipeline that processes uploaded PDF documents asynchronously. The primary components include:
+An AI-powered FastAPI backend to automate processing and validation of medical documents like bills and discharge summaries. Designed using a modular, agent-based architecture with asynchronous file handling and AI integrations for intelligent extraction and consistency checking.
 
-FastAPI Backend: Handles API requests and manages asynchronous file uploads.
+---
 
-Document Processing Agents: Specialized agents for OCR, data extraction, validation, and summarization.
+## 🚀 Features
 
-AI Models: Leveraging Google Gemini for natural language understanding and information extraction.
+- 📄 Upload multiple medical PDFs (bills, discharge summaries)
+- 🤖 Agent-based processing pipeline (OCR → Extraction → Validation → Summarization)
+- ✅ Cross-document validation for name/date/hospital consistency
+- ⚡ Async FastAPI endpoints for fast uploads & processing
+- 📦 Dockerized for easy deployment
 
-Validation Mechanisms: Ensures data consistency across documents.
+---
 
-Dockerized Deployment: Facilitates easy setup and scalability.
+## 🧠 Architecture & Logic
 
-Workflow
-File Upload: Users upload multiple PDF files via a FastAPI endpoint.
+```mermaid
+flowchart LR
+    A[FastAPI Upload Endpoint] --> B[Async PDF Handler]
+    B --> C[OCR Agent]
+    C --> D[Extraction Agent]
+    D --> E[Validation Agent]
+    E --> F[Summarization Agent]
+    F --> G[Processed Response]
+FastAPI is used to build the API server and handle concurrent uploads.
 
-Asynchronous Processing: Uploaded files are processed asynchronously to optimize performance.
+Asynchronous processing ensures the server remains responsive under load.
 
-Agent Orchestration:
+Agent pipeline breaks down processing into clean, testable components:
 
-OCR Agent: Extracts text from PDFs.
+OCR Agent: Converts PDF pages to text.
 
-Extraction Agent: Identifies and extracts relevant data fields.
+Extraction Agent: Uses NLP to identify structured info (patient name, dates, hospital, charges).
 
-Validation Agent: Cross-verifies data consistency between documents.
+Validation Agent: Compares extracted data across documents for consistency.
 
-Summarization Agent: Generates concise summaries of the extracted information.
+Summarization Agent: Returns a concise and user-friendly summary.
 
-Response Generation: Processed data is compiled and returned to the user.
+🤖 AI Tools Used
+Tool	Purpose
+Google Gemini	Natural language understanding & extraction
+LangChain	Agent orchestration pipeline
+PyMuPDF / OCR	Text extraction from PDFs
 
-🤖 AI Tools & Technologies
-Google Gemini: Utilized for advanced natural language processing tasks, including information extraction and summarization.
+AI is used primarily in:
 
-FastAPI: Serves as the web framework for handling API requests and managing asynchronous operations.
+Named entity recognition (NER) for data extraction
 
-Docker: Ensures consistent and scalable deployment across different environments.
+Semantic validation across documents
 
-🧪 Example Prompts Used
-Prompt 1
+Intelligent summarization of the final output
+
+💬 Prompt Examples Used
+📥 Prompt 1 — PDF Upload & Orchestration
 "Create a FastAPI endpoint that accepts multiple PDF uploads and processes them through an agent orchestration pipeline. Use async processing where appropriate and implement proper error handling."
 
-Implementation Highlights:
+✔️ Implemented:
 
-Defined an asynchronous FastAPI endpoint to handle multiple file uploads.
+POST /process-documents route in FastAPI
 
-Integrated error handling to manage exceptions during file processing.
+Async file handling using UploadFile
 
-Orchestrated the processing pipeline to handle each file through the defined agents.
+Agent orchestration pipeline: OCR → Extraction → Validation → Summary
 
-Prompt 2
+Structured error handling for unsupported formats and failures
+
+🔍 Prompt 2 — Document Consistency Validator
 "Build a validation agent that cross-checks data consistency between medical bills and discharge summaries. Check for patient name matches, date consistency, and hospital name alignment."
 
-Implementation Highlights:
+✔️ Implemented:
 
-Developed a validation agent that:
+Agent compares:
 
-Extracts key fields such as patient name, admission/discharge dates, and hospital names from both documents.
+Patient name
 
-Compares these fields to identify discrepancies.
+Admission/discharge dates
 
-Flags inconsistencies for further review.
+Hospital/clinic names
 
-🛠️ Setup & Installation
-Clone the Repository:
+Returns discrepancies for user action
+
+Useful for flagging fraudulent or mismatched claims
+
+🛠️ Tech Stack
+Backend: FastAPI
+
+AI/NLP: Google Gemini, LangChain
+
+PDF Parsing: PyMuPDF (fitz), pytesseract (optional)
+
+Containerization: Docker, Docker Compose
+
+Language: Python 3.11+
+
+🧪 How to Run Locally
+Clone the repository
 
 bash
 Copy
 Edit
 git clone https://github.com/surya14b/healthpay-medical-processor.git
 cd healthpay-medical-processor
-Set Up Environment Variables:
+Set up environment variables
 
-Rename .env.example to .env and populate it with the necessary configurations, including API keys for Google Gemini.
-
-Build and Run with Docker:
+bash
+Copy
+Edit
+cp .env.example .env
+# Fill in your Google Gemini API key and other secrets
+Build & start with Docker
 
 bash
 Copy
 Edit
 docker-compose up --build
-Access the API:
+Access the API
 
-The FastAPI application will be available at http://localhost:8000.
+Visit: http://localhost:8000/docs for Swagger UI
 
-📂 Project Structure
-css
+🗂️ Project Structure
+bash
 Copy
 Edit
+healthpay-medical-processor/
+│
 ├── agents/
 │   ├── ocr_agent.py
 │   ├── extraction_agent.py
 │   ├── validation_agent.py
 │   └── summarization_agent.py
+│
 ├── models/
 │   └── schemas.py
+│
 ├── utils/
 │   └── helpers.py
-├── main.py
+│
+├── main.py              # FastAPI app
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
 └── .env.example
-✅ Features
-Asynchronous File Processing: Efficient handling of multiple file uploads.
-
-Modular Agent Design: Each agent performs a specific task, enhancing maintainability.
-
-Robust Validation: Ensures data integrity across different document types.
-
-Scalable Deployment: Dockerized setup allows for easy scaling and deployment.
