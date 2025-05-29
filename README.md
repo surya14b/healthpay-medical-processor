@@ -16,27 +16,34 @@ An AI-powered FastAPI backend to automate processing and validation of medical d
 
 ## 🧠 Architecture & Logic
 
-```mermaid
-flowchart LR
-    A[FastAPI Upload Endpoint] --> B[Async PDF Handler]
-    B --> C[OCR Agent]
-    C --> D[Extraction Agent]
-    D --> E[Validation Agent]
-    E --> F[Summarization Agent]
-    F --> G[Processed Response]
-FastAPI is used to build the API server and handle concurrent uploads.
+The system follows a modular, agent-based pipeline:
 
-Asynchronous processing ensures the server remains responsive under load.
+[Upload Endpoint]
+↓
+[Async PDF Handler]
+↓
+[OCR Agent]
+↓
+[Extraction Agent]
+↓
+[Validation Agent]
+↓
+[Summarization Agent]
+↓
+[Final Processed Response]
 
-Agent pipeline breaks down processing into clean, testable components:
+### 🧩 Component Responsibilities
 
-OCR Agent: Converts PDF pages to text.
-
-Extraction Agent: Uses NLP to identify structured info (patient name, dates, hospital, charges).
-
-Validation Agent: Compares extracted data across documents for consistency.
-
-Summarization Agent: Returns a concise and user-friendly summary.
+- **FastAPI**: Serves as the backend server, handling uploads and responses.
+- **Async Upload Handler**: Accepts multiple PDF files concurrently and prepares them for processing.
+- **OCR Agent**: Converts scanned PDFs or images within PDFs into raw text.
+- **Extraction Agent**: Uses AI to extract structured fields like:
+  - Patient Name
+  - Admission/Discharge Dates
+  - Hospital Name
+  - Total Charges
+- **Validation Agent**: Cross-verifies critical fields across uploaded documents for consistency.
+- **Summarization Agent**: Returns a user-friendly summary of issues, insights, or a success report.
 
 🤖 AI Tools Used
 Tool	Purpose
@@ -98,22 +105,19 @@ Language: Python 3.11+
 Clone the repository
 
 bash
-Copy
-Edit
+
 git clone https://github.com/surya14b/healthpay-medical-processor.git
 cd healthpay-medical-processor
 Set up environment variables
 
 bash
-Copy
-Edit
+
 cp .env.example .env
 # Fill in your Google Gemini API key and other secrets
 Build & start with Docker
 
 bash
-Copy
-Edit
+
 docker-compose up --build
 Access the API
 
@@ -121,8 +125,7 @@ Visit: http://localhost:8000/docs for Swagger UI
 
 🗂️ Project Structure
 bash
-Copy
-Edit
+
 healthpay-medical-processor/
 │
 ├── agents/
