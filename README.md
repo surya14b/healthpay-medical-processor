@@ -100,12 +100,11 @@ AI is used in:
 git clone https://github.com/surya14b/healthpay-medical-processor.git
 cd healthpay-medical-processor
 
-2. Set Up Environment Variables
+2.Set Up Environment Variables
 
-```bash
 cp .env.example .env
 Fill in your Google Gemini API key and any other required secrets.
 
 3. Build and Start the App
-```bash 
+
 docker-compose up --build
