@@ -16,25 +16,35 @@ An AI-powered FastAPI backend to automate the processing and validation of medic
 
 ## 🧠 Architecture & Logic
 
-The system is structured as a modular pipeline of agents:
+The system follows a clean, modular pipeline of agents:
 
-[Upload Endpoint] --> [Async PDF Handler] --> [OCR Agent] -->
-[Extraction Agent] --> [Validation Agent] --> [Summarization Agent]
---> [Final Processed Response]
+[Upload Endpoint]
+↓
+[Async PDF Handler]
+↓
+[OCR Agent]
+↓
+[Extraction Agent]
+↓
+[Validation Agent]
+↓
+[Summarization Agent]
+↓
+[Final Processed Response]
 
 
 ### 🧩 Component Responsibilities
 
-- **FastAPI**: Serves the backend API endpoints.
-- **Async Upload Handler**: Accepts multiple PDF files concurrently using `UploadFile`.
-- **OCR Agent**: Converts PDF images to text using OCR techniques.
-- **Extraction Agent**: Applies NER to extract structured fields such as:
+- **FastAPI**: Serves the backend API and handles upload requests.
+- **Async Upload Handler**: Accepts multiple PDF files using async `UploadFile`.
+- **OCR Agent**: Extracts text from scanned PDFs using OCR.
+- **Extraction Agent**: Uses AI to pull structured data like:
   - Patient Name
-  - Admission & Discharge Dates
+  - Admission/Discharge Dates
   - Hospital Name
-  - Total Charges
-- **Validation Agent**: Cross-checks documents for consistency.
-- **Summarization Agent**: Generates a user-friendly summary or discrepancy report.
+  - Charges
+- **Validation Agent**: Compares documents for consistency across key fields.
+- **Summarization Agent**: Outputs a final summary or report based on results.
 
 ---
 
@@ -46,11 +56,10 @@ The system is structured as a modular pipeline of agents:
 | LangChain       | Agent orchestration pipeline                 |
 | PyMuPDF/OCR     | Text extraction from PDFs                    |
 
-AI is used in:
-
-- Named Entity Recognition (NER) for structured data extraction
-- Semantic validation across documents
-- Intelligent summarization of processed output
+AI is used for:
+- Named Entity Recognition (NER) for structured field extraction
+- Semantic consistency validation across documents
+- Summarization of the final output
 
 ---
 
@@ -58,27 +67,27 @@ AI is used in:
 
 ### 📥 Prompt 1 — PDF Upload & Orchestration
 
-> **"Create a FastAPI endpoint that accepts multiple PDF uploads and processes them through an agent orchestration pipeline. Use async processing where appropriate and implement proper error handling."**
+> "Create a FastAPI endpoint that accepts multiple PDF uploads and processes them through an agent orchestration pipeline. Use async processing where appropriate and implement proper error handling."
 
 **Implemented:**
-- `POST /process-documents` endpoint in FastAPI
-- Async file handling with `UploadFile`
-- Orchestration: OCR → Extraction → Validation → Summary
-- Structured error handling
+- `POST /process-documents` route in FastAPI
+- Asynchronous file handling with `UploadFile`
+- Orchestrated agent pipeline: OCR → Extraction → Validation → Summary
+- Error handling for invalid or unsupported formats
 
 ---
 
 ### 🔍 Prompt 2 — Document Consistency Validator
 
-> **"Build a validation agent that cross-checks data consistency between medical bills and discharge summaries. Check for patient name matches, date consistency, and hospital name alignment."**
+> "Build a validation agent that cross-checks data consistency between medical bills and discharge summaries. Check for patient name matches, date consistency, and hospital name alignment."
 
 **Implemented:**
 - Validates:
-  - Patient name
-  - Admission/discharge dates
-  - Hospital name
-- Returns detailed discrepancy report
-- Useful for claim validation and fraud detection
+  - Patient names
+  - Dates (admission/discharge)
+  - Hospital/clinic names
+- Flags inconsistencies for review
+- Supports insurance claim fraud detection
 
 ---
 
@@ -86,7 +95,7 @@ AI is used in:
 
 - **Backend**: FastAPI
 - **AI/NLP**: Google Gemini, LangChain
-- **PDF Parsing**: PyMuPDF (`fitz`), `pytesseract` (optional)
+- **PDF Parsing**: PyMuPDF (`fitz`), pytesseract (optional)
 - **Containerization**: Docker, Docker Compose
 - **Language**: Python 3.11+
 
@@ -94,17 +103,25 @@ AI is used in:
 
 ## 🧪 How to Run Locally
 
-### 1. Clone the Repository
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/surya14b/healthpay-medical-processor.git
+   cd healthpay-medical-processor
+   
+2.**Set Up Environment Variables**
+
+ ```bash
+cp .env.example .env
+```
+Open .env and add your Google Gemini API key and other required variables.
+
+3.__Build and Start the App__
 
 ```bash
-git clone https://github.com/surya14b/healthpay-medical-processor.git
-cd healthpay-medical-processor
-
-2.Set Up Environment Variables
-
-cp .env.example .env
-Fill in your Google Gemini API key and any other required secrets.
-
-3. Build and Start the App
-
 docker-compose up --build
+```
+
+4.__Access the API Docs__
+Open your browser and go to:
+http://localhost:8000/docs
